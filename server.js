@@ -17,11 +17,29 @@ server.get("/api/dbz", async (req, res) => {
   }
 });
 
+server.get("/api/dbz/:id", async (req, res) => {
+  try {
+    const data = await pg.find(req.params.id);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ err, message: "Internal Server Error!" });
+  }
+});
+
 server.post("/api/dbz", async (req, res) => {
   const char = req.body;
   try {
     const data = await pg.addChar(char);
-    res.status(201).json(data);
+    res.status(201).json({ data });
+  } catch (err) {
+    res.status(500).json({ err, message: "Internal Server Error!" });
+  }
+});
+
+server.delete("/api/dbz/:id", async (req, res) => {
+  try {
+    const data = await pg.delChar(req.params.id);
+    res.status(204).json({ data });
   } catch (err) {
     res.status(500).json({ err, message: "Internal Server Error!" });
   }

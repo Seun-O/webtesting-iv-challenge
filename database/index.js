@@ -9,25 +9,34 @@ const config = {
   }
 };
 
-const pg = knex(config);
+const db = knex(config);
 
 function find(id) {
   if (id) {
-    return pg("village").where({ id });
+    return db("village")
+      .first()
+      .where({ id });
   }
-  return pg("village");
+  return db("village");
 }
 
 function addChar(char) {
-  return pg("village")
+  return db("village")
     .insert(char)
     .returning("*");
 }
 
+function delChar(id) {
+  return db("village")
+    .del()
+    .where({ id });
+}
+
 // const execute = async () => {
 //   try {
-//     // const data = await addChar({ name: "Super Buu" });
-//     // const data = await find();
+//     const data = await find(1);
+//     // const data = await addChar({ name: "Trunks" });
+//     // const data = await delChar(25);
 //     console.log(data);
 //   } catch (err) {
 //     console.log(err);
@@ -38,5 +47,7 @@ function addChar(char) {
 
 module.exports = {
   find,
-  addChar
+  addChar,
+  delChar,
+  db
 };
